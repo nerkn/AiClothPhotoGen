@@ -2,9 +2,9 @@ import { createClient, User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
 
+  console.error("Dumping all environment variables:", import.meta.env);
 if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_KEY) {
   console.error("Supabase URL or Key is missing in environment variables.");
-  console.error("Dumping all environment variables:", import.meta.env);
   throw new Error("Build process aborted due to missing Supabase configuration.");
 }
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;

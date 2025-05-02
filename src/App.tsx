@@ -5,8 +5,16 @@ import PhotoGenPage from './pages/PhotoGenPage';
 import VideoGenPage from './pages/VideoGenPage';
 import StoryGenPage from './pages/StoryGenPage';
 import ExporterPage from './pages/ExporterPage';
+import LoginPage from './pages/LoginPage';
+import { useCurrentUser } from './utils/supabase';
 
 function App() {
+  const {  user } = useCurrentUser();
+
+  if (!user) {
+    return <LoginPage />;
+  }
+
   return (
     <Layout>
       <Switch>

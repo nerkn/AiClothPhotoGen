@@ -7,7 +7,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isHomePage] = useRoute('/');
   const [isPhotoGenPage] = useRoute('/photo-gen/:id');
   const [isVideoGenPage] = useRoute('/video-gen/:id');
@@ -87,5 +87,3 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     </div>
   );
 };
-
-export default Layout;

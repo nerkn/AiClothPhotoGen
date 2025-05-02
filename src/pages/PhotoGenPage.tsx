@@ -30,12 +30,6 @@ const PhotoGenPage: React.FC = () => {
     }
   }, [item, prompts, getPromptByType]);
   
-  // Handle navigation
-  useEffect(() => {
-    if (!item) {
-      navigate('/');
-    }
-  }, [item, navigate]);
   
   if (!item) {
     return <div>Loading...</div>;

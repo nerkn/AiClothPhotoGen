@@ -1,6 +1,5 @@
-import React from 'react';
 import { Route, Switch } from 'wouter';
-import Layout from './components/Layout';
+import {Layout} from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
 import PhotoGenPage from './pages/PhotoGenPage';
 import VideoGenPage from './pages/VideoGenPage';

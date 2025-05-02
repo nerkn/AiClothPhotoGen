@@ -4,7 +4,7 @@ import Badge from '../common/Badge';
 import Button from '../common/Button';
 import { ChevronDown, ChevronUp, Search, Filter, Image, Video, BookText, Upload } from 'lucide-react';
 import { Link } from 'wouter';
-import { Item, AIWorkerStatus, ItemType } from '../../types';
+import { Item, AIWorkerStatus } from '../../types';
 
 interface Column {
   key: string;
@@ -57,7 +57,7 @@ const DataGrid: React.FC<DataGridProps> = ({ items, isLoading = false }) => {
             className="h-10 w-10 rounded-md object-cover mr-3"
           />
           <div>
-            <div className="font-medium text-gray-900">{item.name}</div>
+            <div className="font-medium text-gray-900 text-ellipsis w-48 overflow-hidden">{item.name}</div>
             <div className="text-sm text-gray-500">{item.type}</div>
           </div>
         </div>
@@ -81,7 +81,7 @@ const DataGrid: React.FC<DataGridProps> = ({ items, isLoading = false }) => {
       title: 'Fotolar',
       sortable: true,
       render: (item) => (
-        <span>{item.aiPhotos.length}</span>
+        <span>{item?.aiPhotos?.length}</span>
       )
     },
     {
@@ -89,7 +89,7 @@ const DataGrid: React.FC<DataGridProps> = ({ items, isLoading = false }) => {
       title: 'Videolar',
       sortable: true,
       render: (item) => (
-        <span>{item.aiVideos.length}</span>
+        <span>{item?.aiVideos?.length}</span>
       )
     },
     {
@@ -97,14 +97,14 @@ const DataGrid: React.FC<DataGridProps> = ({ items, isLoading = false }) => {
       title: 'Storyler',
       sortable: true,
       render: (item) => (
-        <span>{item.stories.length}</span>
+        <span>{item?.stories?.length}</span>
       )
     },
     {
       key: 'export',
       title: 'Aktarım',
       sortable: true,
-      render: (item) => (
+      render: (_item) => (
         // This is just a placeholder for demo purposes
         Math.random() > 0.5 ? 
           <Badge variant="success">{new Date().toLocaleDateString()}</Badge> : 
@@ -184,20 +184,20 @@ const DataGrid: React.FC<DataGridProps> = ({ items, isLoading = false }) => {
     // Handle nested properties for counts
     if (sortKey === 'photoCount') {
       return sortDirection === 'asc'
-        ? a.aiPhotos.length - b.aiPhotos.length
-        : b.aiPhotos.length - a.aiPhotos.length;
+        ? (a?.aiPhotos?.length||0) - (b?.aiPhotos?.length||0)
+        : (b?.aiPhotos?.length||0) - (a?.aiPhotos?.length||0);
     }
     
     if (sortKey === 'videoCount') {
       return sortDirection === 'asc'
-        ? a.aiVideos.length - b.aiVideos.length
-        : b.aiVideos.length - a.aiVideos.length;
+        ? (a?.aiVideos?.length||0) - (b?.aiVideos?.length||0)
+        : (b?.aiVideos?.length||0) - (a?.aiVideos?.length||0);
     }
     
     if (sortKey === 'storiesCount') {
       return sortDirection === 'asc'
-        ? a.stories.length - b.stories.length
-        : b.stories.length - a.stories.length;
+        ? (a?.stories?.length||0) - (b?.stories?.length||0)
+        : (b?.stories?.length||0) - (a?.stories?.length||0);
     }
     
     return 0;
@@ -215,7 +215,7 @@ const DataGrid: React.FC<DataGridProps> = ({ items, isLoading = false }) => {
             </div>
             <input
               type="text"
-              placeholder="Search items..."
+              placeholder="Ürün ara..."
               className="pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

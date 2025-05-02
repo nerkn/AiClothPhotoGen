@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Item, ItemType } from '../types';
+import { supabase } from '../utils/supabase';
 
 // Sample initial data for testing
 const initialItems: Item[] = [
@@ -69,10 +70,10 @@ export const useItemsStore = create<ItemsState>((set, get) => ({
   fetchItems: async () => {
     set({ isLoading: true, error: null });
     try {
-      // In a real app, this would fetch from an API
-      // Simulating API fetch with timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      set({ items: initialItems, isLoading: false });
+      const { data  } = await supabase
+  .from('items')
+  .select() 
+      set({ items: data as Item[], isLoading: false });
     } catch (error) {
       set({ 
         error: error instanceof Error ? error.message : 'Failed to fetch items', 
@@ -150,7 +151,8 @@ export const useItemsStore = create<ItemsState>((set, get) => ({
   },
   
   getItemById: (id) => {
-    return get().items.find(item => item.id === id);
+    console.log(get().items, id)
+    return get().items.find(item => item.id == id);
   },
   
   getItemsByType: (type) => {

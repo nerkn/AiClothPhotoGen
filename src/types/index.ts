@@ -11,9 +11,9 @@ export interface Item {
   name: string;
   price: number;
   barcode: string;
-  aiPhotos: Photo[];
-  aiVideos: Video[];
-  stories: Story[];
+  aiPhotos?: Photo[];
+  aiVideos?: Video[];
+  stories?: Story[];
 }
 
 export interface ItemTypePrompt {

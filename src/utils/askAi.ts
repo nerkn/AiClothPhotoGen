@@ -1,11 +1,11 @@
 
 export async function askAi(path: string, data: any): Promise<any> {
   try {
-    const response = await fetch(import.meta.env.N8N_URL + path, {
+    const response = await fetch(import.meta.env.VITE_N8N_URL + path, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'N8N_KEY': import.meta.env.N8N_KEY || '',
+        'N8N_KEY': import.meta.env.VITE_N8N_KEY || '',
       },
       body: JSON.stringify(data),
     });

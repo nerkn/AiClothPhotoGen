@@ -4,9 +4,9 @@ import { Job, JobType } from '../types';
 // Sample initial jobs for testing
 const initialJobs: Job[] = [
   {
-    id: '1',
+    id: 1,
     type: 'photo',
-    itemId: '1',
+    itemId: 1,
     originalImage: 'https://images.pexels.com/photos/6347548/pexels-photo-6347548.jpeg?auto=compress&cs=tinysrgb&w=500',
     submitDate: new Date(Date.now() - 3600000).toISOString(),
     createDate: new Date(Date.now() - 3600000).toISOString(),
@@ -16,9 +16,9 @@ const initialJobs: Job[] = [
     meta: { status: 'completed' }
   },
   {
-    id: '2',
+    id: 2,
     type: 'video',
-    itemId: '1',
+    itemId: 2,
     submitDate: new Date(Date.now() - 7200000).toISOString(),
     createDate: new Date(Date.now() - 7200000).toISOString(),
     url: 'https://example.com/videos/shirt1.mp4',
@@ -36,11 +36,11 @@ interface JobsState {
   // Actions
   fetchJobs: () => Promise<void>;
   addJob: (job: Omit<Job, 'id' | 'createDate'>) => Promise<void>;
-  updateJob: (id: string, updates: Partial<Job>) => Promise<void>;
-  deleteJob: (id: string) => Promise<void>;
-  getJobsByItemId: (itemId: string) => Job[];
+  updateJob: (id: number, updates: Partial<Job>) => Promise<void>;
+  deleteJob: (id: number) => Promise<void>;
+  getJobsByItemId: (itemId: number) => Job[];
   getJobsByType: (type: JobType) => Job[];
-  getJobsByItemIdAndType: (itemId: string, type: JobType) => Job[];
+  getJobsByItemIdAndType: (itemId: number, type: JobType) => Job[];
 }
 
 export const useJobsStore = create<JobsState>((set, get) => ({
@@ -74,7 +74,7 @@ export const useJobsStore = create<JobsState>((set, get) => ({
       
       const newJob: Job = {
         ...job,
-        id: Math.random().toString(36).substring(2, 9),
+        id: new Date().getTime(),
         createDate: new Date().toISOString()
       };
       

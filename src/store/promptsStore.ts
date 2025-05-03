@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { ItemType, ItemTypePrompt } from '../types';
+import { supabase } from '../utils/supabase';
+import { Tables } from '../types/supabaseTypes';
 
 // Sample initial data
 const initialPrompts: ItemTypePrompt[] = [
@@ -46,8 +48,14 @@ export const usePromptsStore = create<PromptsState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       // Simulate API fetch
-      await new Promise(resolve => setTimeout(resolve, 500));
-      set({ prompts: initialPrompts, isLoading: false });
+      
+      const { data , status } = await supabase 
+        .from('categories')
+        .select('prompts')
+      if(data) 
+        set({ prompts: data.map(d=>d.prompts) as ItemTypePrompt[], isLoading: false });
+      else
+        set({ prompts: initialPrompts, isLoading: false });
     } catch (error) {
       set({ 
         error: error instanceof Error ? error.message : 'Failed to fetch prompts', 

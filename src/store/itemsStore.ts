@@ -5,7 +5,7 @@ import { supabase } from '../utils/supabase';
 // Sample initial data for testing
 const initialItems: Item[] = [
   {
-    id: '1',
+    id: 1,
     link: '#',
     img: 'https://images.pexels.com/photos/6347548/pexels-photo-6347548.jpeg?auto=compress&cs=tinysrgb&w=500',
     img2: 'https://images.pexels.com/photos/6347548/pexels-photo-6347548.jpeg?auto=compress&cs=tinysrgb&w=500',
@@ -18,7 +18,7 @@ const initialItems: Item[] = [
     stories: [],
   },
   {
-    id: '2',
+    id: 2,
     link: '#',
     img: 'https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=500',
     img2: 'https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=500',
@@ -31,7 +31,7 @@ const initialItems: Item[] = [
     stories: [],
   },
   {
-    id: '3',
+    id: 3,
     link: '#',
     img: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=500',
     img2: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=500',
@@ -47,17 +47,17 @@ const initialItems: Item[] = [
 
 export interface ItemsState {
   items: Item[];
-  selectedItemId: string | null;
+  selectedItemId: number | null;
   isLoading: boolean;
   error: string | null;
-  
+
   // Actions
   fetchItems: () => Promise<void>;
   addItem: (item: Omit<Item, 'id'>) => Promise<void>;
-  updateItem: (id: string, updates: Partial<Item>) => Promise<void>;
-  deleteItem: (id: string) => Promise<void>;
-  selectItem: (id: string | null) => void;
-  getItemById: (id: string) => Item | undefined;
+  updateItem: (id: number, updates: Partial<Item>) => Promise<void>;
+  deleteItem: (id: number) => Promise<void>;
+  selectItem: (id: number | null) => void;
+  getItemById: (id: number) => Item | undefined;
   getItemsByType: (type: ItemType) => Item[];
 }
 
@@ -66,95 +66,95 @@ export const useItemsStore = create<ItemsState>((set, get) => ({
   selectedItemId: null,
   isLoading: false,
   error: null,
-  
+
   fetchItems: async () => {
     set({ isLoading: true, error: null });
     try {
-      const { data  } = await supabase
-  .from('items')
-  .select() 
+      const { data } = await supabase
+        .from('items')
+        .select()
       set({ items: data as Item[], isLoading: false });
     } catch (error) {
-      set({ 
-        error: error instanceof Error ? error.message : 'Failed to fetch items', 
-        isLoading: false 
+      set({
+        error: error instanceof Error ? error.message : 'Failed to fetch items',
+        isLoading: false
       });
     }
   },
-  
+
   addItem: async (item) => {
     set({ isLoading: true, error: null });
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
-      const newItem = { 
-        ...item, 
-        id: Math.random().toString(36).substring(2, 9),
+      const newItem = {
+        ...item,
+        id: new Date().getTime(),
         aiPhotos: [],
         aiVideos: [],
         stories: []
       } as Item;
-      
-      set(state => ({ 
+
+      set(state => ({
         items: [...state.items, newItem],
         isLoading: false
       }));
     } catch (error) {
-      set({ 
-        error: error instanceof Error ? error.message : 'Failed to add item', 
-        isLoading: false 
+      set({
+        error: error instanceof Error ? error.message : 'Failed to add item',
+        isLoading: false
       });
     }
   },
-  
+
   updateItem: async (id, updates) => {
     set({ isLoading: true, error: null });
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       set(state => ({
-        items: state.items.map(item => 
+        items: state.items.map(item =>
           item.id === id ? { ...item, ...updates } : item
         ),
         isLoading: false
       }));
     } catch (error) {
-      set({ 
-        error: error instanceof Error ? error.message : 'Failed to update item', 
-        isLoading: false 
+      set({
+        error: error instanceof Error ? error.message : 'Failed to update item',
+        isLoading: false
       });
     }
   },
-  
+
   deleteItem: async (id) => {
     set({ isLoading: true, error: null });
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       set(state => ({
         items: state.items.filter(item => item.id !== id),
         selectedItemId: state.selectedItemId === id ? null : state.selectedItemId,
         isLoading: false
       }));
     } catch (error) {
-      set({ 
-        error: error instanceof Error ? error.message : 'Failed to delete item', 
-        isLoading: false 
+      set({
+        error: error instanceof Error ? error.message : 'Failed to delete item',
+        isLoading: false
       });
     }
   },
-  
+
   selectItem: (id) => {
     set({ selectedItemId: id });
   },
-  
+
   getItemById: (id) => {
     console.log(get().items, id)
     return get().items.find(item => item.id == id);
   },
-  
+
   getItemsByType: (type) => {
     return get().items.filter(item => item.type === type);
   }

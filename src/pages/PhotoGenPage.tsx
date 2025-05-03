@@ -1,49 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { useRoute, useLocation } from 'wouter';
 import { useItemsStore } from '../store/itemsStore';
-import { usePromptsStore } from '../store/promptsStore';
 import { useJobsStore } from '../store/jobsStore';
 import Card, { CardHeader, CardFooter } from '../components/common/Card';
 import Button from '../components/common/Button';
 import { ChevronLeft, ChevronRight, Image, RefreshCw } from 'lucide-react';
+import { usePrompts } from '../store/usePrompts';
 
 const PhotoGenPage: React.FC = () => {
   const [, params] = useRoute('/photo-gen/:id');
   const [, navigate] = useLocation();
-  const itemId = params?.id;
-  
+  const itemId = params?.id ? Number(params.id) : undefined;
+
   const { getItemById } = useItemsStore();
-  const { prompts, getPromptByType } = usePromptsStore();
   const { jobs, getJobsByItemIdAndType, addJob, isLoading } = useJobsStore();
-  
+
   const [step, setStep] = useState(1);
-  const [customPrompts, setCustomPrompts] = useState<string[]>(Array(5).fill(''));
-  
+
   const item = itemId ? getItemById(itemId) : undefined;
+  const { prompts, setPrompts, getPromptByType } = usePrompts();
   const photoJobs = itemId ? getJobsByItemIdAndType(itemId, 'photo') : [];
-  
+
   useEffect(() => {
-    if (item && prompts.length > 0) {
-      // Initialize with the item type prompt as a starting point
-      const basePrompt = getPromptByType(item.type);
-      setCustomPrompts(Array(5).fill(basePrompt));
-    }
-  }, [item, prompts, getPromptByType]);
-  
-  
+    if (!item)
+      return
+    getPromptByType(item.type);
+  }, [item, getPromptByType]);
+
+
   if (!item) {
     return <div>Loading...</div>;
   }
-  
+
   const handleSubmitPrompts = async () => {
-    for (let i = 0; i < customPrompts.length; i++) {
-      if (customPrompts[i].trim()) {
+    for (let i = 0; i < prompts.length; i++) {
+      if (prompts[i].trim()) {
         await addJob({
           type: 'photo',
           itemId: item.id,
           originalImage: item.img,
           submitDate: new Date().toISOString(),
-          prompt: customPrompts[i],
+          prompt: prompts[i],
           submitee: 'admin',
           meta: { promptIndex: i }
         });
@@ -51,11 +48,11 @@ const PhotoGenPage: React.FC = () => {
     }
     setStep(2);
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center space-x-3">
-        <button 
+        <button
           onClick={() => navigate('/')}
           className="p-1 rounded-full hover:bg-gray-100"
         >
@@ -63,7 +60,7 @@ const PhotoGenPage: React.FC = () => {
         </button>
         <h1 className="text-2xl font-bold text-gray-900">Photo Generator</h1>
       </div>
-      
+
       {/* Wizard Steps */}
       <div className="flex justify-center mb-8">
         <div className="w-2/3">
@@ -82,20 +79,20 @@ const PhotoGenPage: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       {step === 1 ? (
         <Card>
-          <CardHeader 
-            title="AI Fotolar Üretin" 
+          <CardHeader
+            title="AI Fotolar Üretin"
             description={`Muhteşem  ${item.type} fotoğrafları üretin.`}
           />
-          
+
           <div className="flex gap-6 mb-6">
             <div className="w-1/3">
               <div className="bg-gray-100 p-4 rounded-lg">
-                <img 
-                  src={item.img} 
-                  alt={item.name} 
+                <img
+                  src={item.img}
+                  alt={item.name}
                   className="w-full h-auto rounded-md object-cover mb-4"
                 />
                 <h3 className="font-medium text-gray-900">{item.name}</h3>
@@ -103,12 +100,12 @@ const PhotoGenPage: React.FC = () => {
                 <p className="text-sm text-gray-500">Barcode: {item.barcode}</p>
               </div>
             </div>
-            
+
             <div className="w-2/3">
               <h3 className="text-lg font-medium text-gray-900 mb-4"> Promptları Özelleştirin</h3>
-              
+
               <div className="space-y-4">
-                {customPrompts.map((prompt, index) => (
+                {prompts.map((prompt, index) => (
                   <div key={index}>
                     <label htmlFor={`prompt-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
                       Prompt {index + 1}
@@ -119,21 +116,21 @@ const PhotoGenPage: React.FC = () => {
                       className="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       value={prompt}
                       onChange={(e) => {
-                        const newPrompts = [...customPrompts];
+                        const newPrompts = [...prompts];
                         newPrompts[index] = e.target.value;
-                        setCustomPrompts(newPrompts);
+                        setPrompts(newPrompts);
                       }}
                       placeholder={`Enter a prompt for ${item.type} photo ${index + 1}`}
                     />
                   </div>
                 ))}
-                
+
                 <div className="flex items-center mt-2">
                   <Button
                     variant="outline"
                     onClick={() => {
                       const basePrompt = getPromptByType(item.type);
-                      setCustomPrompts(Array(5).fill(basePrompt));
+                      setPrompts(Array(5).fill(basePrompt));
                     }}
                     className="mr-2"
                   >
@@ -144,16 +141,16 @@ const PhotoGenPage: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <CardFooter className="flex justify-end">
             <Button variant="outline" onClick={() => navigate('/')} className="mr-2">
               İptal
             </Button>
-            <Button 
-              variant="primary" 
-              onClick={handleSubmitPrompts} 
+            <Button
+              variant="primary"
+              onClick={handleSubmitPrompts}
               isLoading={isLoading}
-              disabled={!customPrompts.some(p => p.trim())}
+              disabled={!prompts.some(p => p.trim())}
             >
               Fotolar üretin
               <ChevronRight className="ml-1 h-5 w-5" />
@@ -162,11 +159,11 @@ const PhotoGenPage: React.FC = () => {
         </Card>
       ) : (
         <Card>
-          <CardHeader 
-            title="Üretilmiş Fotolar" 
+          <CardHeader
+            title="Üretilmiş Fotolar"
             description="AI-üretilmiş fotoları burada eleyin."
           />
-          
+
           {photoJobs.length === 0 ? (
             <div className="text-center py-12">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
@@ -181,14 +178,14 @@ const PhotoGenPage: React.FC = () => {
           ) : (
             <div>
               <h3 className="font-medium text-gray-900 mb-4">Üretilmiş Fotolar</h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {photoJobs.map((job) => (
                   <div key={job.id} className="border border-gray-200 rounded-md overflow-hidden">
                     <div className="relative h-64 bg-gray-100">
                       {job.url ? (
-                        <img 
-                          src={job.url} 
+                        <img
+                          src={job.url}
                           alt={`Generated photo for ${item.name}`}
                           className="w-full h-full object-cover"
                         />
@@ -210,7 +207,7 @@ const PhotoGenPage: React.FC = () => {
               </div>
             </div>
           )}
-          
+
           <CardFooter className="flex justify-between">
             <Button variant="outline" onClick={() => setStep(1)}>
               <ChevronLeft className="mr-1 h-5 w-5" />

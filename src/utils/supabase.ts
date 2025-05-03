@@ -1,5 +1,6 @@
 import { createClient, User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
+import { Database } from "../types/supabaseTypes";
 
 
   console.error("Dumping all environment variables:", import.meta.env);
@@ -9,7 +10,7 @@ if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_KEY) {
 }
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
 
 export const login = async (email: string, password: string) => {

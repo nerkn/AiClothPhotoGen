@@ -3,7 +3,7 @@ export type ItemType = 'shirt' | 'trousers' | 'shoes' | 'hat' | 'scarf';
 export type AIWorkerStatus = 'notstarted' | 'working' | 'pending' | 'pushed';
 
 export interface Item {
-  id: string;
+  id: number;
   link: string;
   img: string;
   img2: string;
@@ -51,9 +51,9 @@ export interface Story {
 export type JobType = 'photo' | 'video' | 'story';
 
 export interface Job {
-  id: string;
+  id: number;
   type: JobType;
-  itemId: string;
+  itemId: number;
   originalImage?: string;
   submitDate: string;
   createDate: string;

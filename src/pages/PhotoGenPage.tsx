@@ -25,9 +25,9 @@ const PhotoGenPage: React.FC = () => {
     if (!item)
       return
     getPromptByType(item.type);
-  }, [item, getPromptByType]);
+  }, [item]);
 
-
+  console.log('prompts', prompts);
   if (!item) {
     return <div>Loading...</div>;
   }

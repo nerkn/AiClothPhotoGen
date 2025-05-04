@@ -9,10 +9,10 @@ import { ChevronLeft, BookText, Copy, Check } from 'lucide-react';
 const StoryGenPage: React.FC = () => {
   const [, params] = useRoute('/story-gen/:id');
   const [, navigate] = useLocation();
-  const itemId = params?.id;
+  const itemId = params?.id ? parseInt(params.id, 10) : undefined;
   
   const { getItemById } = useItemsStore();
-  const { jobs, getJobsByItemIdAndType, addJob, isLoading } = useJobsStore();
+  const { getJobsByItemIdAndType, addJob, isLoading } = useJobsStore();
   
   const [storyPrompt, setStoryPrompt] = useState('');
   const [copied, setCopied] = useState(false);

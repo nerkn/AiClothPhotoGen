@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
 import DataGrid from '../components/DataGrid/DataGrid';
 import { useItemsStore } from '../store/itemsStore';
+import { useJobsStore } from '../store/jobsStore';
 
-const HomePage: React.FC = () => {
-  const { items, isLoading, fetchItems } = useItemsStore();
-  
-  useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
-  
+export const HomePage  = () => {
+  const { items, isLoading } = useItemsStore();
+  const { jobs } = useJobsStore();
+  let itemsWithJobs = items.map(item => {
+    const aiPhotos = jobs.filter(job => job.itemId === item.id && job.type === 'photo');
+    const aiVideos = jobs.filter(job => job.itemId === item.id && job.type === 'video');
+    const stories = jobs.filter(job => job.itemId === item.id && job.type === 'story');
+    return {...item, aiPhotos, aiVideos, stories };
+  });
+
+    
   return (
     <div className="space-y-6">
       <div>
@@ -18,9 +22,7 @@ const HomePage: React.FC = () => {
         </p>
       </div>
       
-      <DataGrid items={items} isLoading={isLoading} />
+      <DataGrid items={itemsWithJobs} isLoading={isLoading} />
     </div>
   );
 };
-
-export default HomePage;

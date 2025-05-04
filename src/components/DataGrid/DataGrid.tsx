@@ -227,7 +227,7 @@ const DataGrid: React.FC<DataGridProps> = ({ items, isLoading = false }) => {
             Filitre
           </Button>
           
-          <Button variant="primary">Ürün aktar</Button>
+          <Button variant="primary">Ürün Getir</Button>
         </div>
       </div>
       

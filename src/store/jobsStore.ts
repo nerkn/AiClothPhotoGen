@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Job, JobType } from '../types';
+import { supabase } from '../utils/supabase';
 
 // Sample initial jobs for testing
 const initialJobs: Job[] = [
@@ -44,20 +45,22 @@ interface JobsState {
 }
 
 export const useJobsStore = create<JobsState>((set, get) => ({
-  jobs: initialJobs,
+  jobs: [],
   isLoading: false,
   error: null,
   
   fetchJobs: async () => {
+    console.log('Fetching jobs...', get().jobs);
     if (get().jobs.length) {
       return;
     }
     
     set({ isLoading: true, error: null });
-    try {
-      // Simulate API fetch
-      await new Promise(resolve => setTimeout(resolve, 800));
-      set({ jobs: initialJobs, isLoading: false });
+    try { 
+      supabase.from('jobs').select().then(({data}) => {
+        console.log('Fetched jobs:', data);
+        set({ jobs: data, isLoading: false });
+      })
     } catch (error) {
       set({ 
         error: error instanceof Error ? error.message : 'Failed to fetch jobs', 
@@ -70,7 +73,7 @@ export const useJobsStore = create<JobsState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 600));
+      await new Promise(resolve => setTimeout(resolve, 100));
       
       const newJob: Job = {
         ...job,
@@ -137,6 +140,7 @@ export const useJobsStore = create<JobsState>((set, get) => ({
   },
   
   getJobsByItemIdAndType: (itemId, type) => {
+    console.log('getJobsByItemIdAndType', itemId, type, get().jobs);
     return get().jobs.filter(job => job.itemId === itemId && job.type === type);
   }
 }));

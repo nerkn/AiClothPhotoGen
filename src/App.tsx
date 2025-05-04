@@ -7,9 +7,11 @@ import StoryGenPage from './pages/StoryGenPage';
 import ExporterPage from './pages/ExporterPage';
 import LoginPage from './pages/LoginPage';
 import { useCurrentUser } from './utils/supabase';
+import { useLoaders } from './utils/useLoaders';
 
 function App() {
-  const {  user } = useCurrentUser();
+  const { user } = useCurrentUser();
+  useLoaders();
 
   if (!user) {
     return <LoginPage />;

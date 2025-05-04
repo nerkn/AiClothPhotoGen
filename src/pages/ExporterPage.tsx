@@ -17,7 +17,7 @@ interface ExportOption {
 const ExporterPage: React.FC = () => {
   const [, params] = useRoute('/exporter/:id');
   const [, navigate] = useLocation();
-  const itemId = params?.id;
+  const itemId = params?.id ? parseInt(params.id, 10) : undefined;
   
   const { getItemById, updateItem } = useItemsStore();
   
@@ -145,15 +145,15 @@ const ExporterPage: React.FC = () => {
                 <div className="space-y-1">
                   <div className="flex justify-between text-sm">
                     <span>Fotolar:</span>
-                    <span className="font-medium">{item.aiPhotos.length}</span>
+                    <span className="font-medium">{item?.aiPhotos?.length}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Videolar:</span>
-                    <span className="font-medium">{item.aiVideos.length}</span>
+                    <span className="font-medium">{item?.aiVideos?.length}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Storyler:</span>
-                    <span className="font-medium">{item.stories.length}</span>
+                    <span className="font-medium">{item?.stories?.length}</span>
                   </div>
                 </div>
               </div>

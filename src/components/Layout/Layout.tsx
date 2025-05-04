@@ -13,6 +13,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isVideoGenPage] = useRoute('/video-gen/:id');
   const [isStoryGenPage] = useRoute('/story-gen/:id');
   const [isExporterPage] = useRoute('/exporter/:id');
+  const [_, params] = useRoute('/:type/:id');
+  let id = params?.id || 1;
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -34,28 +36,28 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               {/* These would only be shown when an item is selected in a real app */}
               {(isPhotoGenPage || isVideoGenPage || isStoryGenPage || isExporterPage) && (
                 <>
-                  <Link href={`/photo-gen/${isPhotoGenPage ? window.location.pathname.split('/').pop() : '1'}`}>
+                  <Link href={`/photo-gen/${id ? id : '1'}`}>
                     <a className={`flex items-center p-2 rounded-md transition-colors ${isPhotoGenPage ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                       <Image className="h-5 w-5 mr-3" />
                       <span className="hidden md:inline">Foto Oluştur</span>
                     </a>
                   </Link>
                   
-                  <Link href={`/video-gen/${isVideoGenPage ? window.location.pathname.split('/').pop() : '1'}`}>
+                  <Link href={`/video-gen/${id ? id : '1'}`}>
                     <a className={`flex items-center p-2 rounded-md transition-colors ${isVideoGenPage ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                       <Video className="h-5 w-5 mr-3" />
                       <span className="hidden md:inline">Video Oluştur</span>
                     </a>
                   </Link>
                   
-                  <Link href={`/story-gen/${isStoryGenPage ? window.location.pathname.split('/').pop() : '1'}`}>
+                  <Link href={`/story-gen/${id ? id : '1'}`}>
                     <a className={`flex items-center p-2 rounded-md transition-colors ${isStoryGenPage ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                       <BookText className="h-5 w-5 mr-3" />
                       <span className="hidden md:inline">Story Oluştur</span>
                     </a>
                   </Link>
                   
-                  <Link href={`/exporter/${isExporterPage ? window.location.pathname.split('/').pop() : '1'}`}>
+                  <Link href={`/exporter/${id ? id : '1'}`}>
                     <a className={`flex items-center p-2 rounded-md transition-colors ${isExporterPage ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                       <Upload className="h-5 w-5 mr-3" />
                       <span className="hidden md:inline">Exporter</span>

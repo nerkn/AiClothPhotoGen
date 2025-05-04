@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRoute, useLocation } from 'wouter';
 import { useItemsStore } from '../store/itemsStore';
 import { useJobsStore } from '../store/jobsStore';
@@ -19,11 +19,11 @@ const PhotoGenPage: React.FC = () => {
 
   const item = itemId ? getItemById(itemId) : undefined;
   const { prompts, setPrompts, getPromptByType } = usePrompts();
-  const photoJobs = itemId ? getJobsByItemIdAndType(itemId, 'photo') : [];
+  const photoJobs = useMemo(()=> itemId ? getJobsByItemIdAndType(itemId, 'photo') : [], [itemId, jobs]);
 
   useEffect(() => {
     if (!item)
-      return
+      return 
     getPromptByType(item.type);
   }, [item]);
 
@@ -58,7 +58,7 @@ const PhotoGenPage: React.FC = () => {
         >
           <ChevronLeft className="h-5 w-5 text-gray-500" />
         </button>
-        <h1 className="text-2xl font-bold text-gray-900">Photo Generator</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Foto Ürettirin</h1>
       </div>
 
       {/* Wizard Steps */}
@@ -198,7 +198,7 @@ const PhotoGenPage: React.FC = () => {
                       )}
                     </div>
                     <div className="p-3">
-                      <div className="text-sm font-medium text-gray-900 mb-1">Foto {(job.meta.promptIndex as number) + 1}</div>
+                      <div className="text-sm font-medium text-gray-900 mb-1">Foto {(job.meta?.promptIndex as number) + 1}</div>
                       <div className="text-xs text-gray-500">{new Date(job.submitDate).toLocaleString()}</div>
                       <div className="mt-2 text-xs text-gray-600 line-clamp-2">{job.prompt}</div>
                     </div>

@@ -61,4 +61,25 @@ export interface Job {
   prompt: string;
   submitee: string;
   meta: Record<string, any>;
+  status?: string;
+}
+
+export interface JobCombine {
+  id: number;
+  name: string;
+  desc: string;
+  prompt: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+}
+
+export interface JobCombineItem {
+  id: number;
+  jobId: number;
+  itemHead: number;
+  itemTop: number;
+  itemBottom: number;
+  itemShoe: number;
+  itemBag: number;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  output: string;
 }

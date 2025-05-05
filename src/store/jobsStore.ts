@@ -1,34 +1,7 @@
 import { create } from 'zustand';
 import { Job, JobType } from '../types';
 import { supabase } from '../utils/supabase';
-
-// Sample initial jobs for testing
-const initialJobs: Job[] = [
-  {
-    id: 1,
-    type: 'photo',
-    itemId: 1,
-    originalImage: 'https://images.pexels.com/photos/6347548/pexels-photo-6347548.jpeg?auto=compress&cs=tinysrgb&w=500',
-    submitDate: new Date(Date.now() - 3600000).toISOString(),
-    createDate: new Date(Date.now() - 3600000).toISOString(),
-    url: 'https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=500',
-    prompt: 'White shirt on mannequin, studio lighting, minimalist background',
-    submitee: 'user1',
-    meta: { status: 'completed' }
-  },
-  {
-    id: 2,
-    type: 'video',
-    itemId: 2,
-    submitDate: new Date(Date.now() - 7200000).toISOString(),
-    createDate: new Date(Date.now() - 7200000).toISOString(),
-    url: 'https://example.com/videos/shirt1.mp4',
-    prompt: 'Rotating view of white shirt, professional lighting',
-    submitee: 'user1',
-    meta: { status: 'processing' }
-  }
-];
-
+ 
 interface JobsState {
   jobs: Job[];
   isLoading: boolean;

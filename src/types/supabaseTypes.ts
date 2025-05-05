@@ -100,6 +100,105 @@ export type Database = {
         }
         Relationships: []
       }
+      jobCombine: {
+        Row: {
+          desc: string | null
+          id: number
+          name: string | null
+          prompt: string | null
+          status: string | null
+        }
+        Insert: {
+          desc?: string | null
+          id: number
+          name?: string | null
+          prompt?: string | null
+          status?: string | null
+        }
+        Update: {
+          desc?: string | null
+          id?: number
+          name?: string | null
+          prompt?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      jobCombineItems: {
+        Row: {
+          id: number
+          itemBag: number | null
+          itemBottom: number | null
+          itemHead: number | null
+          itemShoe: number | null
+          itemTop: number | null
+          jobId: number | null
+          output: string | null
+          status: string | null
+        }
+        Insert: {
+          id: number
+          itemBag?: number | null
+          itemBottom?: number | null
+          itemHead?: number | null
+          itemShoe?: number | null
+          itemTop?: number | null
+          jobId?: number | null
+          output?: string | null
+          status?: string | null
+        }
+        Update: {
+          id?: number
+          itemBag?: number | null
+          itemBottom?: number | null
+          itemHead?: number | null
+          itemShoe?: number | null
+          itemTop?: number | null
+          jobId?: number | null
+          output?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      jobs: {
+        Row: {
+          createDate: string | null
+          id: number
+          itemId: number | null
+          "meta.status": string | null
+          originalImage: string | null
+          prompt: string | null
+          submitDate: string | null
+          submitee: string | null
+          type: string | null
+          url: string | null
+        }
+        Insert: {
+          createDate?: string | null
+          id?: number
+          itemId?: number | null
+          "meta.status"?: string | null
+          originalImage?: string | null
+          prompt?: string | null
+          submitDate?: string | null
+          submitee?: string | null
+          type?: string | null
+          url?: string | null
+        }
+        Update: {
+          createDate?: string | null
+          id?: number
+          itemId?: number | null
+          "meta.status"?: string | null
+          originalImage?: string | null
+          prompt?: string | null
+          submitDate?: string | null
+          submitee?: string | null
+          type?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

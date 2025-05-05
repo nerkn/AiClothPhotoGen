@@ -65,6 +65,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </Link>
                 </>
               )}
+              <Link href="/Combine">
+                <a className={`flex items-center p-2 rounded-md transition-colors ${  'text-gray-700 hover:bg-gray-100'}`}>
+                  <Home className="h-5 w-5 mr-3" />
+                  <span className="hidden md:inline">Combine</span>
+                </a>
+              </Link>
             </nav>
             
             <div className="px-2 mt-6">
